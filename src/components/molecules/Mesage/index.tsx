@@ -5,7 +5,8 @@ import urlencode from 'urlencode'
 import { Avatar, Section, Text, TextWrapper, Username } from './styles'
 import { useQuery } from '@apollo/react-hooks'
 
-import { QUERY_USERNAME } from '~/graphql/local'
+import { QUERY_USERNAME } from '../../../../graphql/local'
+// ~/graphql/local'
 
 interface MessageProps {
   children?: any

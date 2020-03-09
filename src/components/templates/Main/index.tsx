@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import get from 'ts-get'
 import { useQuery } from '@apollo/react-hooks'
 
-import Chat from '~/components/organisims/Chat'
-import Content from '~/components/molecules/Login'
-import Layout from '~/components/atoms/Layout'
+import Chat from '../../organisims/Chat'
+import Content from '../../molecules/Login'
+import Layout from '../../atoms/Layout'
 import { Container } from './styles'
-import { QUERY_CHAT } from '~/graphql/local'
+import { QUERY_CHAT } from '../../../../graphql/local'
 
 const Main: React.FC = () => {
   const { data } = useQuery(QUERY_CHAT)

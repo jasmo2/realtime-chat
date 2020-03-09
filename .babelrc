@@ -1,10 +1,26 @@
 {
   "presets": [
-    ["@babel/preset-env", {"modules": false}],
+    ["@babel/preset-env", { "modules": false }],
     "@babel/preset-react"
   ],
   "plugins": [
-    "react-hot-loader/babel"
+    "react-hot-loader/babel",
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "~/*": ["src/*"],
+          "~/atoms/*": ["src/components/atoms/*"],
+          "~/graphql/*": ["graphql/*"],
+          "~/molecules/*": ["src/molecules/*"],
+          "~/organisms/*": ["src/organisms/*"],
+          "~/pages/*": ["src/pages/*"],
+          "~/templates/*": ["src/components/templates/*"],
+          "~/theme/*": ["src/theme/*"]
+        }
+      }
+    ]
   ],
   "env": {
     "production": {

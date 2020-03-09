@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { H5, Text as PText } from '~/components/atoms/Typography'
+import { H5, Text as PText } from '../../atoms/Typography'
 
 export const Section = styled.section`
   align-items: flex-start;
