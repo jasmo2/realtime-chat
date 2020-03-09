@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "lib": ["esnext", "dom"],
+    "allowJs": true,
+    "jsx": "react",
+    "types": ["node"],
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "target": "esnext",
+    "outDir": "./dist/",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["src/*"],
+      "~/atoms/*": ["src/components/atoms/*"],
+      "~/graphql/*": ["graphql/*"],
+      "~/molecules/*": ["src/molecules/*"],
+      "~/organisms/*": ["src/organisms/*"],
+      "~/pages/*": ["src/pages/*"],
+      "~/templates/*": ["src/components/templates/*"],
+      "~/theme/*": ["src/theme/*"]
+    }
+  },
+  "include": ["./src/**/*"]
+}
