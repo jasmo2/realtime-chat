@@ -2,8 +2,8 @@ import * as React from 'react'
 import ApolloClient, { InMemoryCache } from 'apollo-boost'
 import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks'
 
-import Main from './templates/Main'
-import { resolvers } from '../../graphql/resolvers'
+import Main from '~/templates/Main'
+import { resolvers } from '~/graphql/resolvers'
 
 const cache = new InMemoryCache()
 const client = new ApolloClient({

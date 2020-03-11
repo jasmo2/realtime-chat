@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { useQuery } from '@apollo/react-hooks'
 
-import { QUERY_USERNAME, QUERY_CHAT } from '../../../graphql/local'
+import { QUERY_USERNAME, QUERY_CHAT } from '~/graphql/local'
 
 interface LayoutProps {
   children: React.ReactNode

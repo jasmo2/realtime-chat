@@ -3,7 +3,7 @@ import { Button, ButtonWrapper, Form, Input, JoinTitle, Label } from './styles'
 import io from 'socket.io-client'
 import { useMutation } from '@apollo/react-hooks'
 
-import { MUTATION_CHAT, MUTATION_USERNAME } from '../../../../graphql/local'
+import { MUTATION_CHAT, MUTATION_USERNAME } from '~/graphql/local'
 
 interface LoginProps {}
 

@@ -19,8 +19,8 @@
       "~/*": ["src/*"],
       "~/atoms/*": ["src/components/atoms/*"],
       "~/graphql/*": ["graphql/*"],
-      "~/molecules/*": ["src/molecules/*"],
-      "~/organisms/*": ["src/organisms/*"],
+      "~/molecules/*": ["src/components/molecules/*"],
+      "~/organisms/*": ["src/components/organisms/*"],
       "~/pages/*": ["src/pages/*"],
       "~/templates/*": ["src/components/templates/*"],
       "~/theme/*": ["src/theme/*"]

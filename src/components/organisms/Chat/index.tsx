@@ -1,7 +1,7 @@
 import React from 'react'
 import {} from './styles'
-import Message from '../../molecules/Mesage'
-import Write from '../../molecules/Writte'
+import Message from '~/molecules/Mesage'
+import Write from '~/molecules/Writte'
 
 interface ChatProps {
   children?: any

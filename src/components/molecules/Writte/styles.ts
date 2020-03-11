@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
-import { Form as FormL, Input as InputL } from '../../molecules/Login/styles'
-import { commonStyles, Text } from '../../atoms/Typography'
+import { Form as FormL, Input as InputL } from '~/molecules/Login/styles'
+import { commonStyles, Text } from '~/atoms/Typography'
 
 export const Form = styled(FormL)`
   bottom: 0;
