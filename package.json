@@ -1,7 +1,7 @@
 {
-  "name": "typescript-webpack",
+  "name": "typescript-webpack-chat",
   "version": "1.0.0",
-  "description": "webpack typescript config",
+  "description": "webpack typescript config, and socket.io chat",
   "main": "index.js",
   "author": "jasmo2",
   "license": "MIT",
