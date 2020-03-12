@@ -14,6 +14,20 @@ export const QUERY_USERNAME = gql`
   }
 `
 
+// export const MUTATION_SOCKET = gql`
+//   mutation setSocket($socket: Any) {
+//     setSocket(socket: $socket) @client
+//   }
+// `
+
+// export const QUERY_SOCKET = gql`
+//   query socketInstace {
+//     socketInstace @client {
+//       socket
+//     }
+//   }
+// `
+
 export const MUTATION_CHAT = gql`
   mutation setIsOnChat($onChat: Boolean = false) {
     setIsOnChat(onChat: $onChat) @client

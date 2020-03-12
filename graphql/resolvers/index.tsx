@@ -1,8 +1,4 @@
-import get from 'ts-get'
-import {} from '~/graphql/local'
-
 const setUsername = (_, { username }, { cache }) => {
-  console.log('setUsername -> username', username)
   const data = {
     usernameData: {
       __typename: 'usernameData',
@@ -32,9 +28,26 @@ const setIsOnChat = (_, { onChat }, { cache }) => {
   return null
 }
 
+// const setSocket = (_, { socket }, { cache }) => {
+//   console.log('setSocket -> socket', socket)
+//   const data = {
+//     socketInstace: {
+//       __typename: 'socketInstace',
+//       socket
+//     }
+//   }
+
+//   cache.writeData({
+//     data
+//   })
+
+//   return null
+// }
+
 export const resolvers = {
   Mutation: {
     setIsOnChat,
+    // setSocket,
     setUsername
   }
 }

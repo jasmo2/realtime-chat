@@ -1,15 +1,31 @@
-import React, { useState, FormEvent, Dispatch, SetStateAction } from 'react'
+import React, { useState, FormEvent, useEffect } from 'react'
 import { Form, Input, Typing, Button } from './styles'
+import { SocketsProps } from '~/components/organisms/Chat'
 
-interface FormProps {
-  handleSubmit: Function
-  handleOnChange: Function
-}
-const Writte: React.FC = props => {
+interface WritteProps extends SocketsProps {}
+const Writte: React.FC<WritteProps> = props => {
+  const { io } = props
   const [message, setMessage] = useState('')
+  const [typers, setTypers] = useState({})
+
+  useEffect(() => {
+    io.emit('typing', false)
+  }, [message])
+
+  io.on('is-typing', typers => {
+    /* <typers> is a map where the `key` is the <username> and the value
+     *  is a `boolean` that is `true` if the user is typing and `false` if not.
+     */
+    setTypers({ ...typers })
+  })
+
+  const getTyper = typers => {
+    console.log('getTyper -> typers', typers)
+  }
 
   const handleOnChange = e => {
     setMessage(e.target.value)
+    io.emit('typing', true)
     if (e.key === 'Enter') {
       e.preventDefault()
       e.stopPropagation()
@@ -26,15 +42,16 @@ const Writte: React.FC = props => {
       <Form onSubmit={handleSubmit}>
         <Input
           type='text'
-          placeholder='username'
+          placeholder='message'
           onChange={handleOnChange}
-          name='username'
+          name='message'
         />
         <Button type='submit'>Send</Button>
-        <Typing>Pam is writting</Typing>
+        <Typing>{getTyper(typers)} is writting</Typing>
       </Form>
     </>
   )
+  // <Typing>Pam is writting</Typing>
 }
 
 export default React.memo(Writte)

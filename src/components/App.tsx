@@ -10,6 +10,10 @@ const client = new ApolloClient({
   cache,
   clientState: {
     defaults: {
+      socketInstace: {
+        __typename: 'socketInstace',
+        socket: null
+      },
       usernameData: {
         __typename: 'usernameData',
         username: ''

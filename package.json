@@ -56,7 +56,7 @@
     "clean-dist": "rimraf dist/*",
     "lint": "tslint './src/**/*.ts*' --format stylish --project . --force",
     "start": "yarn run start-dev",
-    "start-dev": "webpack-dev-server --config=webpack/dev.js",
+    "start-dev": "webpack-dev-server --config=webpack/dev.js ",
     "start-prod": "yarn run build && node express.js"
   }
 }

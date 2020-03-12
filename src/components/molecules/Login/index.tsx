@@ -1,37 +1,25 @@
 import React, { useState, FormEvent, Dispatch, SetStateAction } from 'react'
 import { Button, ButtonWrapper, Form, Input, JoinTitle, Label } from './styles'
-import io from 'socket.io-client'
 import { useMutation } from '@apollo/react-hooks'
 
 import { MUTATION_CHAT, MUTATION_USERNAME } from '~/graphql/local'
 
 interface LoginProps {}
 
-const Login: React.FC<LoginProps> = props => {
+const Login: React.FC<LoginProps> = () => {
   const [username, setFormUsername] = useState('')
   const [connecting, setConnecting] = useState(false)
   const [setIsOnChat] = useMutation(MUTATION_CHAT)
   const [setUsername] = useMutation(MUTATION_USERNAME)
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     setConnecting(true)
-    setUsername({
-      variables: { username }
-    })
+    setUsername({ variables: { username } })
 
-    const socket = io(
-      `https://pager-hiring.herokuapp.com/?username=${username}`
-    )
-
-    socket.on('user-connected', user => {
-      console.log('user-connected => username', user)
-      setConnecting(false)
-      setIsOnChat({
-        variables: { onChat: true }
-      })
-    })
+    setConnecting(false)
+    setIsOnChat({ variables: { onChat: true } })
   }
 
   const handleOnChange = e => {
