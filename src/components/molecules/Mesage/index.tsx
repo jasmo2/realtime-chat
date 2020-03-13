@@ -4,11 +4,6 @@ import urlencode from 'urlencode'
 import { Avatar, Section, Text, TextWrapper, Username } from './styles'
 import { useQuery } from '@apollo/react-hooks'
 
-import { SocketsProps } from '~/components/organisms/Chat'
-// ~/graphql/local'
-
-interface ComponentProps {}
-
 interface MessageProps {
   alt?: string | null
   text?: string

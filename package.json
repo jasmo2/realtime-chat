@@ -51,12 +51,15 @@
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2"
   },
+  "config": {
+    "port": "3000"
+  },
   "scripts": {
     "build": "yarn run clean-dist && webpack -p --config=webpack/prod.js",
     "clean-dist": "rimraf dist/*",
     "lint": "tslint './src/**/*.ts*' --format stylish --project . --force",
     "start": "yarn run start-dev",
-    "start-dev": "webpack-dev-server --config=webpack/dev.js ",
+    "start-dev": "webpack-dev-server --config=webpack/dev.js --port $PORT || webpack-dev-server --config=webpack/dev.js --port $npm_package_config_port",
     "start-prod": "yarn run build && node express.js"
   }
 }
