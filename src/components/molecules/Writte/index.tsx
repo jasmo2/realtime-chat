@@ -5,6 +5,7 @@ import { SocketsProps } from '~/components/organisms/Chat'
 interface WritteProps extends SocketsProps {
   typers?: object
 }
+
 const Writte: React.FC<WritteProps> = props => {
   const { io, typers } = props
   const [typerWritting, setTyperWritting] = useState(null) as any
@@ -12,37 +13,40 @@ const Writte: React.FC<WritteProps> = props => {
   const [typing, setTyping] = useState(false)
   let stopTypingTimeout: null | number | NodeJS.Timer = null
 
+  // useEffect(() => {
+  //   io.emit('typing', false)
+  // }, [message])
+
   useEffect(() => {
-    io.emit('typing', false)
-  }, [message])
+    isTyping()
+  }, [typers])
 
   useEffect(() => {
     if (typing) {
-      // io.emit('typing', true)
+      io.emit('typing', true)
     } else {
-      // io.emit('typing', true)
+      io.emit('typing', false)
     }
   }, [typing])
 
-  useEffect(() => {
-    if (typing) {
-      setTyperWritting(typers)
-      io.emit('typing', true)
-    } else {
-      setTyperWritting(null)
-      io.emit('typing', false)
-    }
-  }, [typers])
+  const typingtimeout = () => {
+    setTyping(false)
+  }
 
-  const handleOnChange = e => {
-    setMessage(e.target.value)
+  const startCountDown = () => {
     if (!typing) {
       setTyping(true)
     }
+    clearTimeout(stopTypingTimeout as NodeJS.Timer)
+    stopTypingTimeout = setTimeout(typingtimeout, 3300)
+  }
 
-    stopTypingTimeout = setTimeout(() => {
-      setTyping(false)
-    }, 500)
+  const endCountDown = () => {
+    clearTimeout(stopTypingTimeout as NodeJS.Timer)
+  }
+
+  const handleOnChange = e => {
+    setMessage(e.target.value)
 
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -52,13 +56,36 @@ const Writte: React.FC<WritteProps> = props => {
   }
 
   const getTypers = typers => {
-    console.log('getTyper -> typers', typers)
+    const maxUsersTyping = 1
+    let whoIsTyping = ''
+    let count = 0
+    for (const user in typers) {
+      if (typers.hasOwnProperty(user) && typers[user]) {
+        if (maxUsersTyping === count) {
+          whoIsTyping = 'People are'
+          break
+        }
+        whoIsTyping = `${user} is`
+        count += 1
+      }
+    }
+
+    return whoIsTyping
+  }
+
+  const isTyping = () => {
+    if (typing) {
+      setTyperWritting(getTypers(typers))
+    } else {
+      setTyperWritting(null)
+    }
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('handleSubmit -> handleSubmit')
   }
+
   return (
     <>
       <Form onSubmit={handleSubmit}>
@@ -66,12 +93,12 @@ const Writte: React.FC<WritteProps> = props => {
           type='text'
           placeholder='message'
           onChange={handleOnChange}
+          onKeyUp={startCountDown}
+          onKeyDown={endCountDown}
           name='message'
         />
         <Button type='submit'>Send</Button>
-        <Typing>
-          {typerWritting ? ` ${typerWritting} is writting` : null}
-        </Typing>
+        <Typing>{typerWritting ? ` ${typerWritting} typing` : null}</Typing>
       </Form>
     </>
   )
