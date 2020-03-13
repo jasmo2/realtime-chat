@@ -4,22 +4,13 @@ import urlencode from 'urlencode'
 import { Avatar, Section, Text, TextWrapper, Username } from './styles'
 import { useQuery } from '@apollo/react-hooks'
 
-interface MessageProps {
+export interface MessageProps {
   alt?: string | null
   text?: string
   time: Date
   type: string
   url?: string
   username: string
-}
-
-export const messageDefault: MessageProps = {
-  alt: null,
-  text: '',
-  time: new Date(),
-  type: '',
-  url: '',
-  username: ''
 }
 
 const Message: React.FC<MessageProps> = props => {

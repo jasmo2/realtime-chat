@@ -1,34 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import io from 'socket.io-client'
 
 import Messages from '~/organisms/Messages'
 import Write from '~/molecules/Writte'
-import { QUERY_USERNAME } from '~/graphql/local'
-import get from 'ts-get'
-
-interface ChatProps {
-  children?: any
-}
 
 export interface SocketsProps {
   io: any
 }
 
-const Chat: React.FC<ChatProps> = () => {
-  const [socket, setSocket] = useState(null)
-  const { data: uData } = useQuery(QUERY_USERNAME)
-  const username = get(uData, it => it.usernameData.username, '')
+interface ChatProps extends SocketsProps {
+  children?: any
+}
 
-  useEffect(() => {
-    console.log('useEffect=>username', username)
-    setSocket(io(`https://pager-hiring.herokuapp.com/?username=${username}`))
-  }, [])
+const Chat: React.FC<ChatProps> = props => {
+  const { io } = props
+  const [typers, setTypers] = useState({})
+
+  io.on('is-typing', typers => {
+    /* <typers> is a map where the `key` is the <username> and the value
+     *  is a `boolean` that is `true` if the user is typing and `false` if not.
+     */
+    setTypers({ ...typers })
+  })
 
   return (
     <>
-      <Messages io={socket} />
-      <Write io={socket} />
+      <Messages io={io} />
+      <Write io={io} typers={typers} />
     </>
   )
 }

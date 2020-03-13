@@ -2,35 +2,57 @@ import React, { useState, FormEvent, useEffect } from 'react'
 import { Form, Input, Typing, Button } from './styles'
 import { SocketsProps } from '~/components/organisms/Chat'
 
-interface WritteProps extends SocketsProps {}
+interface WritteProps extends SocketsProps {
+  typers?: object
+}
 const Writte: React.FC<WritteProps> = props => {
-  const { io } = props
+  const { io, typers } = props
+  const [typerWritting, setTyperWritting] = useState(null) as any
   const [message, setMessage] = useState('')
-  const [typers, setTypers] = useState({})
+  const [typing, setTyping] = useState(false)
+  let stopTypingTimeout: null | number | NodeJS.Timer = null
 
   useEffect(() => {
     io.emit('typing', false)
   }, [message])
 
-  io.on('is-typing', typers => {
-    /* <typers> is a map where the `key` is the <username> and the value
-     *  is a `boolean` that is `true` if the user is typing and `false` if not.
-     */
-    setTypers({ ...typers })
-  })
+  useEffect(() => {
+    if (typing) {
+      // io.emit('typing', true)
+    } else {
+      // io.emit('typing', true)
+    }
+  }, [typing])
 
-  const getTyper = typers => {
-    console.log('getTyper -> typers', typers)
-  }
+  useEffect(() => {
+    if (typing) {
+      setTyperWritting(typers)
+      io.emit('typing', true)
+    } else {
+      setTyperWritting(null)
+      io.emit('typing', false)
+    }
+  }, [typers])
 
   const handleOnChange = e => {
     setMessage(e.target.value)
-    io.emit('typing', true)
+    if (!typing) {
+      setTyping(true)
+    }
+
+    stopTypingTimeout = setTimeout(() => {
+      setTyping(false)
+    }, 500)
+
     if (e.key === 'Enter') {
       e.preventDefault()
       e.stopPropagation()
       this.onSubmit()
     }
+  }
+
+  const getTypers = typers => {
+    console.log('getTyper -> typers', typers)
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -47,7 +69,9 @@ const Writte: React.FC<WritteProps> = props => {
           name='message'
         />
         <Button type='submit'>Send</Button>
-        <Typing>{getTyper(typers)} is writting</Typing>
+        <Typing>
+          {typerWritting ? ` ${typerWritting} is writting` : null}
+        </Typing>
       </Form>
     </>
   )
