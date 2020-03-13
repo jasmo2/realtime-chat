@@ -7,9 +7,7 @@ import { useQuery } from '@apollo/react-hooks'
 import { SocketsProps } from '~/components/organisms/Chat'
 // ~/graphql/local'
 
-interface ComponentProps extends SocketsProps {
-  children?: any
-}
+interface ComponentProps {}
 
 interface MessageProps {
   alt?: string | null
@@ -20,7 +18,7 @@ interface MessageProps {
   username: string
 }
 
-const messageDefault: MessageProps = {
+export const messageDefault: MessageProps = {
   alt: null,
   text: '',
   time: new Date(),
@@ -29,25 +27,20 @@ const messageDefault: MessageProps = {
   username: ''
 }
 
-const Message: React.FC<ComponentProps> = props => {
-  const { io } = props
-
-  const [msg, setMsg] = useState(messageDefault)
+const Message: React.FC<MessageProps> = props => {
+  const { alt, text, time, type, url, username } = props
   const [urlencodedUser, setEncodedUser] = useState('')
-  io.on('message', message => {
-    setMsg({ ...message })
-  })
 
   useEffect(() => {
-    setEncodedUser(urlencode(msg.username))
-  }, [msg.username])
+    setEncodedUser(urlencode(username))
+  }, [username])
 
   return (
     <Section>
       <Avatar src={`https://ui-avatars.com/api/?name=${urlencodedUser}`} />
       <TextWrapper>
-        <Username>{msg.username}</Username>
-        <Text>{msg.text}</Text>
+        <Username>{username}</Username>
+        <Text>{text}</Text>
       </TextWrapper>
     </Section>
   )

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import io from 'socket.io-client'
 
-import Message from '~/molecules/Mesage'
+import Messages from '~/organisms/Messages'
 import Write from '~/molecules/Writte'
 import { QUERY_USERNAME } from '~/graphql/local'
 import get from 'ts-get'
@@ -27,7 +27,7 @@ const Chat: React.FC<ChatProps> = () => {
 
   return (
     <>
-      <Message io={socket} />
+      <Messages io={socket} />
       <Write io={socket} />
     </>
   )
