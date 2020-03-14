@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import get from 'ts-get'
 import urlencode from 'urlencode'
 import { Avatar, Section, Text, TextWrapper, Username } from './styles'
+import { GiphyFetch } from '@giphy/js-fetch-api'
+
+const gf = new GiphyFetch(process.env.GIPHY_KEY!)
 
 export interface MessageProps {
   alt?: string | null
@@ -38,16 +40,6 @@ const Message: React.FC<MessageProps> = props => {
       </TextWrapper>
     </Section>
   )
-  // <TextWrapper>
-  //   <Username>{username}</Username>
-  //   <Text>
-  //     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed{' '}
-  //   </Text>
-  //   <Text>
-  //     aut odit aut fugit, sed quia consequuntur magni dolores eos qui
-  //     ratione
-  //   </Text>
-  // </TextWrapper>
 }
 
 export default React.memo(Message)

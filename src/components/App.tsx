@@ -10,9 +10,9 @@ const client = new ApolloClient({
   cache,
   clientState: {
     defaults: {
-      socketInstace: {
-        __typename: 'socketInstace',
-        socket: null
+      gifQuery: {
+        __typename: 'gifQuery',
+        queryGif: ''
       },
       usernameData: {
         __typename: 'usernameData',

@@ -18,7 +18,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: ['babel-loader', 'source-map-loader'],
+        use: ['source-map-loader'],
         exclude: /node_modules/
       },
       {

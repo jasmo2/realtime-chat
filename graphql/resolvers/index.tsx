@@ -28,26 +28,26 @@ const setIsOnChat = (_, { onChat }, { cache }) => {
   return null
 }
 
-// const setSocket = (_, { socket }, { cache }) => {
-//   console.log('setSocket -> socket', socket)
-//   const data = {
-//     socketInstace: {
-//       __typename: 'socketInstace',
-//       socket
-//     }
-//   }
+const setGif = (_, { queryGif }, { cache }) => {
+  console.log('setGif -> queryGif', queryGif)
+  const data = {
+    gifQuery: {
+      __typename: 'gifQuery',
+      queryGif
+    }
+  }
 
-//   cache.writeData({
-//     data
-//   })
+  cache.writeData({
+    data
+  })
 
-//   return null
-// }
+  return null
+}
 
 export const resolvers = {
   Mutation: {
+    setGif,
     setIsOnChat,
-    // setSocket,
     setUsername
   }
 }

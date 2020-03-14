@@ -1,17 +1,24 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react'
+import { useMutation } from '@apollo/react-hooks'
+
 import { Form, Input, Typing, Button } from './styles'
 import { SocketsProps } from '~/components/organisms/Chat'
+import { MUTATION_GIF } from '~/graphql/local'
 
 interface WritteProps extends SocketsProps {
   typers?: object
 }
 
+const GIF_REGEX = /\/gif ([^\s]+)/
 const Writte: React.FC<WritteProps> = props => {
   const { io, typers } = props
   const formRef = useRef(null)
   const [typerWritting, setTyperWritting] = useState<string | null>(null)
+  const [queryGif, setGifQuery] = useState<string | null>(null)
   const [message, setMessage] = useState('')
   const [typing, setTyping] = useState(false)
+  const [setGif] = useMutation(MUTATION_GIF)
+
   let stopTypingTimeout: null | number | NodeJS.Timer = null
 
   io.on('is-typing', typers => {
@@ -26,7 +33,11 @@ const Writte: React.FC<WritteProps> = props => {
     if (typing) {
       io.emit('typing', true)
     } else {
-      io.emit('typing', false)
+      setTimeout(() => {
+        if (!typing) {
+          io.emit('typing', false)
+        }
+      }, 300)
     }
   }, [typing])
 
@@ -47,7 +58,15 @@ const Writte: React.FC<WritteProps> = props => {
   }
 
   const handleOnChange = e => {
-    setMessage(e.target.value)
+    const text = e.target.value
+    if (GIF_REGEX.test(text)) {
+      setMessage('')
+      const query = text.substring(4)
+      setGifQuery(query)
+    } else {
+      setMessage(text)
+    }
+    // '/gif'
 
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -87,8 +106,13 @@ const Writte: React.FC<WritteProps> = props => {
     console.log('handleSubmit -> handleSubmit', message)
     //@ts-ignore
     formRef!.current.reset()
-    io.emit('text-message', message)
-    setMessage('')
+
+    if (queryGif) {
+      setGif({ variables: { queryGif } })
+    } else {
+      io.emit('text-message', message)
+      setMessage('')
+    }
   }
 
   return (
