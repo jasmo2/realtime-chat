@@ -23,7 +23,7 @@ const Main: React.FC = () => {
   }, [username])
 
   return (
-    <Container>
+    <Container isOnChat={isOnChat}>
       <Layout>{isOnChat ? <Chat io={socket} /> : <Content />}</Layout>
     </Container>
   )

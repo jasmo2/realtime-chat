@@ -1,7 +1,11 @@
 import styled from '@emotion/styled'
 
-export const Container = styled.section`
-  align-items: center;
+type ContainerProps = {
+  isOnChat: boolean
+}
+
+export const Container = styled.section<ContainerProps>`
+  align-items: ${({ isOnChat }) => (isOnChat ? 'baseline' : 'center')};
   display: flex;
   height: 100vh;
   justify-content: center;
