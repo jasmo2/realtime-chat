@@ -5,8 +5,9 @@ import { GiphyFetch } from '@giphy/js-fetch-api'
 import { useQuery } from '@apollo/react-hooks'
 import { QUERY_GIF } from '~/graphql/local'
 import get from 'ts-get'
+import { GIPHY_KEY } from '~/constants'
 
-const gf = new GiphyFetch(process.env.GIPHY_KEY!)
+const gf = new GiphyFetch(GIPHY_KEY)
 
 export interface MessageProps {
   alt?: string | null

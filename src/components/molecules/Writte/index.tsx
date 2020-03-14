@@ -5,12 +5,13 @@ import { GiphyFetch } from '@giphy/js-fetch-api'
 import { Form, Input, Typing, Button } from './styles'
 import { SocketsProps } from '~/components/organisms/Chat'
 import { MUTATION_GIF } from '~/graphql/local'
+import { GIPHY_KEY } from '~/constants'
 
 interface WritteProps extends SocketsProps {
   typers?: object
 }
 
-const gf = new GiphyFetch(process.env.GIPHY_KEY!)
+const gf = new GiphyFetch(GIPHY_KEY)
 const GIF_REGEX = /\/gif ([^\s]+)/
 const Writte: React.FC<WritteProps> = props => {
   const { io, typers } = props
