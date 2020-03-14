@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, useEffect } from 'react'
+import React, { useState, FormEvent, useEffect, useRef } from 'react'
 import { Form, Input, Typing, Button } from './styles'
 import { SocketsProps } from '~/components/organisms/Chat'
 
@@ -8,14 +8,15 @@ interface WritteProps extends SocketsProps {
 
 const Writte: React.FC<WritteProps> = props => {
   const { io, typers } = props
-  const [typerWritting, setTyperWritting] = useState(null) as any
+  const formRef = useRef(null)
+  const [typerWritting, setTyperWritting] = useState<string | null>(null)
   const [message, setMessage] = useState('')
   const [typing, setTyping] = useState(false)
   let stopTypingTimeout: null | number | NodeJS.Timer = null
 
-  // useEffect(() => {
-  //   io.emit('typing', false)
-  // }, [message])
+  io.on('is-typing', typers => {
+    setTyperWritting(getTypers(typers))
+  })
 
   useEffect(() => {
     isTyping()
@@ -51,7 +52,7 @@ const Writte: React.FC<WritteProps> = props => {
     if (e.key === 'Enter') {
       e.preventDefault()
       e.stopPropagation()
-      this.onSubmit()
+      handleSubmit(e)
     }
   }
 
@@ -83,12 +84,16 @@ const Writte: React.FC<WritteProps> = props => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('handleSubmit -> handleSubmit')
+    console.log('handleSubmit -> handleSubmit', message)
+    //@ts-ignore
+    formRef!.current.reset()
+    io.emit('text-message', message)
+    setMessage('')
   }
 
   return (
     <>
-      <Form onSubmit={handleSubmit}>
+      <Form ref={formRef} onSubmit={handleSubmit}>
         <Input
           type='text'
           placeholder='message'
@@ -102,7 +107,6 @@ const Writte: React.FC<WritteProps> = props => {
       </Form>
     </>
   )
-  // <Typing>Pam is writting</Typing>
 }
 
 export default React.memo(Writte)
