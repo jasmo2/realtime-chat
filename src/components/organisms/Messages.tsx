@@ -9,7 +9,6 @@ import Message, {
 interface ComponentProps extends SocketsProps {
   children?: any
 }
-let count = 0
 const Messages: React.FC<ComponentProps> = props => {
   const { io } = props
 

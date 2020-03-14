@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import urlencode from 'urlencode'
 import { Avatar, Section, Text, TextWrapper, Username } from './styles'
 import { GiphyFetch } from '@giphy/js-fetch-api'
+import { useQuery } from '@apollo/react-hooks'
+import { QUERY_GIF } from '~/graphql/local'
+import get from 'ts-get'
 
 const gf = new GiphyFetch(process.env.GIPHY_KEY!)
 
@@ -26,6 +29,9 @@ export const messageDefault: MessageProps = {
 const Message: React.FC<MessageProps> = props => {
   const { alt, text, time, type, url, username } = props
   const [urlencodedUser, setEncodedUser] = useState('')
+  // const { data } = useQuery(QUERY_GIF)
+  // console.log('TCL: data', data)
+  // const isOnChat = get(data, it => it.gifQuery.queryGif, false)
 
   useEffect(() => {
     setEncodedUser(urlencode(username))

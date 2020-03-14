@@ -1,5 +1,6 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react'
 import { useMutation } from '@apollo/react-hooks'
+import { GiphyFetch } from '@giphy/js-fetch-api'
 
 import { Form, Input, Typing, Button } from './styles'
 import { SocketsProps } from '~/components/organisms/Chat'
@@ -9,6 +10,7 @@ interface WritteProps extends SocketsProps {
   typers?: object
 }
 
+const gf = new GiphyFetch(process.env.GIPHY_KEY!)
 const GIF_REGEX = /\/gif ([^\s]+)/
 const Writte: React.FC<WritteProps> = props => {
   const { io, typers } = props
@@ -101,14 +103,23 @@ const Writte: React.FC<WritteProps> = props => {
     }
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('handleSubmit -> handleSubmit', message)
     //@ts-ignore
     formRef!.current.reset()
 
     if (queryGif) {
-      setGif({ variables: { queryGif } })
+      const { data: gifs } = await gf.search('dogs', {
+        limit: 10,
+        sort: 'relevant',
+        type: 'gifs'
+      })
+
+      const rndGifs = gifs[Math.random() * (9 - 0)]
+      console.log('TCL: handleSubmit -> rndGifs', rndGifs)
+
+      // io.emit('image-message', { url, alt })
     } else {
       io.emit('text-message', message)
       setMessage('')
