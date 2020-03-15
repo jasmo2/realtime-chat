@@ -6,8 +6,6 @@ import { GiphyFetch } from '@giphy/js-fetch-api'
 import { GIPHY_KEY } from '~/constants'
 import Body, { BodyProps } from '~/components/atoms/Body'
 
-const gf = new GiphyFetch(GIPHY_KEY)
-
 interface MessageBaseProps {
   time: Date | null
   username: string
