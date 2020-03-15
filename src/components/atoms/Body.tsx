@@ -8,26 +8,21 @@ import { GIPHY_KEY } from '~/constants'
 const gf = new GiphyFetch(GIPHY_KEY)
 
 export interface BodyProps {
-  text?: string | string[]
-  url?: string | string[]
-  alt?: string | string[] | null
+  alt?: string | null
+  text?: string
+  type: string
+  url?: string
 }
 
 const Body: React.FC<BodyProps> = props => {
-  const { text, url, alt } = props
+  const { text, url, alt, type } = props
 
   return (
     <>
-      {url ? (
-        !Array.isArray(url) ? (
-          <Gif src={url} alt={!Array.isArray(alt) ? alt! : ''} />
-        ) : (
-          url.map((uri, idx) => <Gif src={uri} alt={alt![idx]} />)
-        )
-      ) : !Array.isArray(text) ? (
-        <Text>{text}</Text>
+      {type === 'image' ? (
+        <Gif src={url} alt={!Array.isArray(alt) ? alt! : ''} />
       ) : (
-        text.map(t => <Text>{text}</Text>)
+        <Text>{text}</Text>
       )}
     </>
   )

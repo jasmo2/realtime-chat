@@ -38,5 +38,10 @@ const imgSize = 250
 export const Gif = styled.img`
   height: ${imgSize}px;
   object-fit: cover;
+  margin-bottom: 24px;
   width: ${imgSize}px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 `

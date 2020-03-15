@@ -3,46 +3,39 @@ import React, { useState } from 'react'
 import { SocketsProps } from '~/components/organisms/Chat'
 import Message, {
   MessageProps,
-  messageDefault
+  messageDefault,
+  MessageRenderProps
 } from '~/components/molecules/Message'
+import { BodyProps } from '../atoms/Body'
 
 interface ComponentProps extends SocketsProps {
   children?: any
 }
 
-let lastMsg: MessageProps = messageDefault
+let lastMsg: MessageRenderProps = messageDefault
 const Messages: React.FC<ComponentProps> = props => {
   const { io } = props
 
-  const [msgs, setMsgs] = useState<MessageProps[]>([messageDefault])
+  const [msgs, setMsgs] = useState<MessageRenderProps[]>([messageDefault])
 
   io.on('message', (message: MessageProps) => {
-    const lastIndex = msgs.length - 1
+    const { time: oldT, username: oldU, body: oldBody } = lastMsg
+    const { time, username, ...body } = message
 
-    if (lastIndex === 0) {
-      const {
-        time: oldT,
-        username: oldU,
-        text: oldTxt,
-        url: oldUrl,
-        alt: oldAlt
-      } = lastMsg
+    if (!lastMsg.time || oldT !== time) {
+      const msg = { time, username, body: [body] }
 
-      if (lastMsg.time && oldT !== message.time) {
-        if (oldU === message.username) {
-          msgs.pop()
-          const newMsg = {
-            text: [oldTxt, message.text],
-            url: message.url ? [oldUrl, message.url] : message.url,
-            alt: message.alt ? [oldAlt, message.alt] : message.alt
-          } as any
-
-          setMsgs(msgs.concat(newMsg))
-        } else {
-          setMsgs(oldMsgs => [...oldMsgs, message])
-        }
-        lastMsg = message
+      if (oldU === username) {
+        const newBody: BodyProps[] = oldBody.concat(body)
+        setMsgs(oldMsgs => {
+          const newMsg = oldMsgs.pop()
+          newMsg!.body = newBody
+          return [...oldMsgs, newMsg!]
+        })
+      } else {
+        setMsgs(oldMsgs => [...oldMsgs, msg])
       }
+      lastMsg = msg
     }
   })
 

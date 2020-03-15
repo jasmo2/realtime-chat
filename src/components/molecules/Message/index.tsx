@@ -8,24 +8,31 @@ import Body, { BodyProps } from '~/components/atoms/Body'
 
 const gf = new GiphyFetch(GIPHY_KEY)
 
-export interface MessageProps extends BodyProps {
+interface MessageBaseProps {
   time: Date | null
-  type: string
-  url?: string
   username: string
 }
+export interface MessageProps extends BodyProps, MessageBaseProps {}
 
-export const messageDefault: MessageProps = {
-  alt: null,
-  text: '',
+export interface MessageRenderProps extends MessageBaseProps {
+  body: BodyProps[]
+}
+
+export const messageDefault: MessageRenderProps = {
+  body: [
+    {
+      alt: null,
+      text: '',
+      type: '',
+      url: ''
+    }
+  ],
   time: null,
-  type: '',
-  url: '',
   username: ''
 }
 
-const Message: React.FC<MessageProps> = props => {
-  const { alt, text, time, type, url, username } = props
+const Message: React.FC<MessageRenderProps> = props => {
+  const { body, username } = props
   const [urlencodedUser, setEncodedUser] = useState('')
 
   useEffect(() => {
@@ -37,7 +44,18 @@ const Message: React.FC<MessageProps> = props => {
       <Avatar src={`https://ui-avatars.com/api/?name=${urlencodedUser}`} />
       <TextWrapper>
         <Username>{username}</Username>
-        <Body text={text} url={url} alt={alt} />
+        {body.map((msg, idx) => {
+          const { type, alt, text, url } = msg
+          return (
+            <Body
+              alt={alt}
+              key={`body-key-${idx}`}
+              text={text}
+              type={type}
+              url={url}
+            />
+          )
+        })}
       </TextWrapper>
     </Section>
   )
