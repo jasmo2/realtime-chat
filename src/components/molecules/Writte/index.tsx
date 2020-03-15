@@ -4,8 +4,8 @@ import { GiphyFetch } from '@giphy/js-fetch-api'
 
 import { Form, Input, Typing, Button } from './styles'
 import { SocketsProps } from '~/components/organisms/Chat'
-import { MUTATION_GIF } from '~/graphql/local'
 import { GIPHY_KEY } from '~/constants'
+import get from 'ts-get'
 
 interface WritteProps extends SocketsProps {
   typers?: object
@@ -20,7 +20,6 @@ const Writte: React.FC<WritteProps> = props => {
   const [queryGif, setGifQuery] = useState<string | null>(null)
   const [message, setMessage] = useState('')
   const [typing, setTyping] = useState(false)
-  const [setGif] = useMutation(MUTATION_GIF)
 
   let stopTypingTimeout: null | number | NodeJS.Timer = null
 
@@ -111,16 +110,17 @@ const Writte: React.FC<WritteProps> = props => {
     formRef!.current.reset()
 
     if (queryGif) {
-      const { data: gifs } = await gf.search('dogs', {
+      const { data: gifs } = await gf.search(queryGif, {
         limit: 10,
         sort: 'relevant',
         type: 'gifs'
       })
 
-      const rndGifs = gifs[Math.random() * (9 - 0)]
-      console.log('TCL: handleSubmit -> rndGifs', rndGifs)
-
-      // io.emit('image-message', { url, alt })
+      const rnd = Math.floor(Math.random() * (9 - 0))
+      const rndGif = gifs[rnd]
+      const alt = get(rndGif, it => it.title, '')
+      const url = get(rndGif, it => it.images.original.webp, '')
+      io.emit('image-message', { url, alt })
     } else {
       io.emit('text-message', message)
       setMessage('')

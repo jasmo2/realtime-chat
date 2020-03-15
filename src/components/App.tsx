@@ -10,10 +10,6 @@ const client = new ApolloClient({
   cache,
   clientState: {
     defaults: {
-      gifQuery: {
-        __typename: 'gifQuery',
-        queryGif: ''
-      },
       usernameData: {
         __typename: 'usernameData',
         username: ''

@@ -33,3 +33,10 @@ export const Text = styled.p`
   ${PText}
   margin-bottom: 4px;
 `
+
+const imgSize = 250
+export const Gif = styled.img`
+  height: ${imgSize}px;
+  object-fit: cover;
+  width: ${imgSize}px;
+`
