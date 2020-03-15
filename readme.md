@@ -1,5 +1,8 @@
 # Socket.io chat in webpack-typescript
 
+> Heroku-app
+> [https://webpack-react-chat.herokuapp.com/](https://webpack-react-chat.herokuapp.com/)
+
 ### Tech Stack
 
 This project has taken the **ReactJS** as development framework.
@@ -120,3 +123,8 @@ this app development.
 I try to modularize as I usually do, hope you like the way this project is structure.
 
 > Regards, **Jaime Molina _aka jasmo2_**
+
+---
+
+> Heroku-app
+> [https://webpack-react-chat.herokuapp.com/](https://webpack-react-chat.herokuapp.com/)
