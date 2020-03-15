@@ -1,32 +1,38 @@
 import React, { useState, useEffect } from 'react'
 import urlencode from 'urlencode'
-import { Avatar, Section, Text, TextWrapper, Username, Gif } from './styles'
+import { Avatar, Section, TextWrapper, Username } from './styles'
 import { GiphyFetch } from '@giphy/js-fetch-api'
 
 import { GIPHY_KEY } from '~/constants'
+import Body, { BodyProps } from '~/components/atoms/Body'
 
 const gf = new GiphyFetch(GIPHY_KEY)
 
-export interface MessageProps {
-  alt?: string | null
-  text?: string
-  time: Date
-  type: string
-  url?: string
+interface MessageBaseProps {
+  time: Date | null
   username: string
 }
+export interface MessageProps extends BodyProps, MessageBaseProps {}
 
-export const messageDefault: MessageProps = {
-  alt: null,
-  text: '',
-  time: new Date(),
-  type: '',
-  url: '',
+export interface MessageRenderProps extends MessageBaseProps {
+  body: BodyProps[]
+}
+
+export const messageDefault: MessageRenderProps = {
+  body: [
+    {
+      alt: null,
+      text: '',
+      type: '',
+      url: ''
+    }
+  ],
+  time: null,
   username: ''
 }
 
-const Message: React.FC<MessageProps> = props => {
-  const { alt, text, time, type, url, username } = props
+const Message: React.FC<MessageRenderProps> = props => {
+  const { body, username } = props
   const [urlencodedUser, setEncodedUser] = useState('')
 
   useEffect(() => {
@@ -38,7 +44,18 @@ const Message: React.FC<MessageProps> = props => {
       <Avatar src={`https://ui-avatars.com/api/?name=${urlencodedUser}`} />
       <TextWrapper>
         <Username>{username}</Username>
-        {url ? <Gif src={url} alt={alt!} /> : <Text>{text}</Text>}
+        {body.map((msg, idx) => {
+          const { type, alt, text, url } = msg
+          return (
+            <Body
+              alt={alt}
+              key={`body-key-${idx}`}
+              text={text}
+              type={type}
+              url={url}
+            />
+          )
+        })}
       </TextWrapper>
     </Section>
   )
