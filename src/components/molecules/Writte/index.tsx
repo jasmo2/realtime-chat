@@ -1,11 +1,12 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react'
-import { useMutation } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks'
 import { GiphyFetch } from '@giphy/js-fetch-api'
 
 import { Form, Input, Typing, Button } from './styles'
 import { SocketsProps } from '~/components/organisms/Chat'
 import { GIPHY_KEY } from '~/constants'
 import get from 'ts-get'
+import { QUERY_USERNAME } from '~/graphql/local'
 
 interface WritteProps extends SocketsProps {
   typers?: object
@@ -20,6 +21,8 @@ const Writte: React.FC<WritteProps> = props => {
   const [queryGif, setGifQuery] = useState<string | null>(null)
   const [message, setMessage] = useState('')
   const [typing, setTyping] = useState(false)
+  const { data: uData } = useQuery(QUERY_USERNAME)
+  const username = get(uData, it => it.usernameData.username, '')
 
   let stopTypingTimeout: null | number | NodeJS.Timer = null
 
@@ -82,7 +85,7 @@ const Writte: React.FC<WritteProps> = props => {
     let whoIsTyping = ''
     let count = 0
     for (const user in typers) {
-      if (typers.hasOwnProperty(user) && typers[user]) {
+      if (typers.hasOwnProperty(user) && typers[user] && user !== username) {
         if (maxUsersTyping === count) {
           whoIsTyping = 'People are'
           break
@@ -105,7 +108,6 @@ const Writte: React.FC<WritteProps> = props => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('handleSubmit -> handleSubmit', message)
     //@ts-ignore
     formRef!.current.reset()
 
