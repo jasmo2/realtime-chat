@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import urlencode from 'urlencode'
-import { Avatar, Section, Text, TextWrapper, Username, Gif } from './styles'
+import { Avatar, Section, TextWrapper, Username } from './styles'
 import { GiphyFetch } from '@giphy/js-fetch-api'
 
 import { GIPHY_KEY } from '~/constants'
+import Body, { BodyProps } from '~/components/atoms/Body'
 
 const gf = new GiphyFetch(GIPHY_KEY)
 
-export interface MessageProps {
-  alt?: string | null
-  text?: string
-  time: Date
+export interface MessageProps extends BodyProps {
+  time: Date | null
   type: string
   url?: string
   username: string
@@ -19,7 +18,7 @@ export interface MessageProps {
 export const messageDefault: MessageProps = {
   alt: null,
   text: '',
-  time: new Date(),
+  time: null,
   type: '',
   url: '',
   username: ''
@@ -38,7 +37,7 @@ const Message: React.FC<MessageProps> = props => {
       <Avatar src={`https://ui-avatars.com/api/?name=${urlencodedUser}`} />
       <TextWrapper>
         <Username>{username}</Username>
-        {url ? <Gif src={url} alt={alt!} /> : <Text>{text}</Text>}
+        <Body text={text} url={url} alt={alt} />
       </TextWrapper>
     </Section>
   )
